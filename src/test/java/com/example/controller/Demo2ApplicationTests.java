@@ -1,30 +1,32 @@
 package com.example.controller;
 
-import com.example.controller.SimpleController;
-import com.example.repositories.BookRepository;
+
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.Assert.assertNotNull;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureMockMvc
 public class Demo2ApplicationTests {
 
 	@Autowired
-	private SimpleController controller;
+	private MockMvc mockMvc;
 
 	@Test
-	public void contextLoads() {
-		assertNotNull(controller);
+	public void shouldReturnDefaultMessage() throws Exception {
+		this.mockMvc.perform(get("/home")).andExpect(status().isOk())
+				.andExpect(content().string(containsString("Hello World")));
 	}
 
 }

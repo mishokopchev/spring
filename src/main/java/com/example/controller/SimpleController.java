@@ -13,16 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SimpleController {
 
-    @Autowired
-    private BookRepository bookRepository;
-
-    SimpleController(BookRepository bookRepository){
-        this.bookRepository = bookRepository;
-    }
-
     @RequestMapping("/home")
     String home() {
-        System.out.println(this.bookRepository);
         return "Hello World!";
 
     }

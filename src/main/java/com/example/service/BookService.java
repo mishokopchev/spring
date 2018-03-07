@@ -25,12 +25,15 @@ public class BookService implements BackendService{
     public void addBook(BookDTO bookDTO) throws ApplicationException {
 
         try {
+            String code = this.createHash(bookDTO.getName());
+            Book dbBook = this.bookRepository.findOne(code);
+            if(dbBook != null){
+                throw new ApplicationException("Book already in the store");
+            }
             Book book = new Book();
             book.setAuthor(bookDTO.getAuthor());
             book.setName(bookDTO.getName());
-            byte[] array = bookDTO.getName().getBytes();
-            book.setCode(DigestUtils.md5DigestAsHex(array));
-
+            book.setCode(code);
             this.bookRepository.save(book);
         } catch (Exception e) {
             throw new ApplicationException(e.getMessage());
@@ -45,12 +48,17 @@ public class BookService implements BackendService{
 
     }
 
-    public BookDTO getOne(String code) {
-        return null;
+    public Book findOne(String code) {
+        return this.bookRepository.findOne(code);
     }
 
     List<BookDTO> getAllBooks() {
         return null;
+
+    }
+
+    private String createHash(String var){
+        return DigestUtils.md5DigestAsHex(var.getBytes());
     }
 
 

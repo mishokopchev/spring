@@ -3,6 +3,7 @@ package com.example.controller;
 
 import com.example.dto.BookDTO;
 import com.example.exception.ApplicationException;
+import com.example.model.Book;
 import com.example.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,10 +35,14 @@ public class BookController {
     }
 
     @GetMapping(value = "/{code}",produces = "application/json")
-    public ResponseEntity<BookDTO> getBook(@RequestParam String code){
-        System.out.println(this.bookService);
-        return new ResponseEntity<BookDTO>(HttpStatus.OK);
+    public ResponseEntity<BookDTO> getBook(@PathVariable(required = true) String code){
+        Book book = this.bookService.findOne(code);
+        BookDTO bookDTO = new BookDTO();
+        bookDTO.setAuthor(book.getAuthor());
+        bookDTO.setName(book.getName());
+        return new ResponseEntity<BookDTO>(bookDTO,HttpStatus.OK);
     }
+
 
 
 
