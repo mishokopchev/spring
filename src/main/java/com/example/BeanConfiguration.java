@@ -8,7 +8,7 @@ import org.springframework.util.DigestUtils;
 /**
  * Created by mihailkopchev on 3/6/18.
  */
-
+@Configuration
 public class BeanConfiguration {
 
     @Bean

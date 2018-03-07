@@ -14,7 +14,7 @@ import java.util.List;
  * Created by mihailkopchev on 3/6/18.
  */
 @Service
-public class BookService implements BackendService{
+public class BookService implements BackendService {
     private BookRepository bookRepository;
 
     @Autowired
@@ -22,18 +22,13 @@ public class BookService implements BackendService{
         this.bookRepository = bookRepository;
     }
 
-    public void addBook(BookDTO bookDTO) throws ApplicationException {
-
+    public void addBook(Book book) throws ApplicationException {
         try {
-            String code = this.createHash(bookDTO.getName());
+            String code = book.getCode();
             Book dbBook = this.bookRepository.findOne(code);
-            if(dbBook != null){
+            if (dbBook != null) {
                 throw new ApplicationException("Book already in the store");
             }
-            Book book = new Book();
-            book.setAuthor(bookDTO.getAuthor());
-            book.setName(bookDTO.getName());
-            book.setCode(code);
             this.bookRepository.save(book);
         } catch (Exception e) {
             throw new ApplicationException(e.getMessage());
@@ -57,10 +52,9 @@ public class BookService implements BackendService{
 
     }
 
-    private String createHash(String var){
-        return DigestUtils.md5DigestAsHex(var.getBytes());
+    private String createHash(String var) {
+        return var; //DigestUtils.md5DigestAsHex(var.getBytes());
     }
-
 
 
 }
