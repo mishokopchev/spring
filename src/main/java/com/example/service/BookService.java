@@ -47,13 +47,9 @@ public class BookService implements BackendService {
         return this.bookRepository.findOne(code);
     }
 
-    List<BookDTO> getAllBooks() {
+    public List<Book> getAllBooks() {
         return null;
 
-    }
-
-    private String createHash(String var) {
-        return var; //DigestUtils.md5DigestAsHex(var.getBytes());
     }
 
 

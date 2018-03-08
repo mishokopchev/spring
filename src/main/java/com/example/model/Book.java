@@ -19,11 +19,11 @@ public class Book implements Serializable {
     private String author;
     private String name;
 
-    public Book(String code, String author, String name) {
-        this.setCode(author + name);
+    public Book(String author, String name) {
         this.author = author;
         this.name = name;
     }
+
     @JsonGetter
     public String getCode() {
         return code;
@@ -31,10 +31,9 @@ public class Book implements Serializable {
 
     @JsonSetter
     public void setCode(String code) {
-        if (code != null) {
-            this.code = DigestUtils.md5DigestAsHex(code.getBytes());
-        }
+        this.code = code;
     }
+
     public String getAuthor() {
         return author;
     }

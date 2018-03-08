@@ -10,7 +10,6 @@ public class BookDTO {
     private String name;
     private String author;
 
-    @JsonIgnore
     private String code;
 
     public String getName() {

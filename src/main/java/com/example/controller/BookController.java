@@ -6,6 +6,7 @@ import com.example.exception.ApplicationException;
 import com.example.model.Book;
 import com.example.service.BookService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * Created by mihailkopchev on 3/6/18.
  */
 @RestController
-@RequestMapping(value = "book")
+@RequestMapping(value = "books")
 @Component
 public class BookController {
 
@@ -38,7 +42,6 @@ public class BookController {
     @PostMapping(value = "/add", consumes = "application/json")
     public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) throws ApplicationException {
         Book book = this.modelMapper.map(bookDTO, Book.class);
-        book.setCode(book.getAuthor() + (book.getName()));
         this.bookService.addBook(book);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -53,6 +56,15 @@ public class BookController {
         BookDTO bookDTO = null;
         bookDTO = modelMapper.map(book, BookDTO.class);
         return new ResponseEntity<BookDTO>(bookDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/all", produces = "application/json")
+    public ResponseEntity<?> getAllBooks() {
+        List<Book> bookList = bookService.getAllBooks();
+        List<BookDTO> bookDTOList =
+                modelMapper.map(bookList, new TypeToken<List<BookDTO>>() {
+                }.getType());
+        return new ResponseEntity<List<?>>(bookDTOList, HttpStatus.OK);
     }
 
 
